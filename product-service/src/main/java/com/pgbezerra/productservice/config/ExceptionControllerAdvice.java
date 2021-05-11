@@ -1,5 +1,6 @@
 package com.pgbezerra.productservice.config;
 
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.pgbezerra.productservice.http.data.response.FieldMessage;
 import com.pgbezerra.productservice.http.data.response.StandardError;
 import com.pgbezerra.productservice.http.data.response.ValidationError;
@@ -50,12 +51,21 @@ public class ExceptionControllerAdvice {
         return validationError;
     }
 
+
+
+    @ExceptionHandler(value = JsonPatchException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public StandardError defaultHandler(JsonPatchException ex, HttpServletRequest request) {
+        return new StandardError("X_202", ex.getMessage(), request.getRequestURI(), documentationPath);
+    }
+
     @Hidden
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(value = HttpStatus.METHOD_NOT_ALLOWED)
     public StandardError notSupported(HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
         return new StandardError("X_250", "Method not allowed", request.getRequestURI(), documentationPath);
     }
+
 
 
     @ExceptionHandler(value = Exception.class)

@@ -31,6 +31,12 @@ public class Product {
         this.value = requireNonNull(value);
     }
 
+    public Product(@NonNull Long id, @NonNull String description, @NonNull BigDecimal value) {
+        this.id = requireNonNull(id);
+        this.description = requireNonNull(description);
+        this.value = requireNonNull(value);
+    }
+
     public Long getId() {
         return id;
     }

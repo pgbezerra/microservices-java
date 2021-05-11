@@ -5,7 +5,9 @@ import io.micrometer.core.lang.NonNull;
 
 public interface ProductService {
 
-    Product insert(@NonNull Product product);
+    Product save(@NonNull Product product);
     Product findById(Long id);
+    Product updateAll(Product product);
+    void deleteById(Long id);
 
 }

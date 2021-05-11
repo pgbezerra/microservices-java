@@ -18,6 +18,7 @@
         <spring-cloud.version>2020.0.2</spring-cloud.version>
         <modelmapper.version>2.4.2</modelmapper.version>
         <spring-doc.openapi.version>1.5.8</spring-doc.openapi.version>
+        <java-patch.version>1.13</java-patch.version>
     </properties>
     <dependencies>
         <dependency>
@@ -39,6 +40,12 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.java-json-tools</groupId>
+            <artifactId>json-patch</artifactId>
+            <version>${java-patch.version}</version>
         </dependency>
 
         <dependency>
