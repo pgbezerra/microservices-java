@@ -6,7 +6,6 @@ import com.pgbezerra.productservice.service.ProductService;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
-import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -28,8 +27,4 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new NoResultException(String.format("Product with id %d not found", id)));
     }
 
-    @Override
-    public List<Product> findAll() {
-        return productRepository.findAll();
-    }
 }
