@@ -5,6 +5,8 @@ import com.pgbezerra.productservice.http.data.response.FieldMessage;
 import com.pgbezerra.productservice.http.data.response.StandardError;
 import com.pgbezerra.productservice.http.data.response.ValidationError;
 import io.swagger.v3.oas.annotations.Hidden;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -21,13 +23,15 @@ import javax.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
 
+    private static final Logger log = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
+
     @Value("${springdoc.swagger-ui.path}")
     private String documentationPath;
 
     @Hidden
     @ExceptionHandler(value = NoResultException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public StandardError notFound(NoResultException ex, HttpServletRequest request){
+    public StandardError notFound(NoResultException ex, HttpServletRequest request) {
         return new StandardError("X_100", ex.getMessage(), request.getRequestURI(), documentationPath);
     }
 
@@ -45,12 +49,11 @@ public class ExceptionControllerAdvice {
 
         ValidationError validationError = new ValidationError("X_201", "Invalid argument", request.getRequestURI(), documentationPath);
 
-        for(FieldError x: ex.getBindingResult().getFieldErrors())
+        for (FieldError x : ex.getBindingResult().getFieldErrors())
             validationError.getErrors().add(new FieldMessage(x.getField(), x.getDefaultMessage()));
 
         return validationError;
     }
-
 
 
     @ExceptionHandler(value = JsonPatchException.class)
@@ -67,10 +70,10 @@ public class ExceptionControllerAdvice {
     }
 
 
-
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public StandardError defaultHandler(Exception ex, HttpServletRequest request) {
+        log.error(ex.getMessage(), ex);
         return new StandardError("X_300", ex.getMessage(), request.getRequestURI(), documentationPath);
     }
 
