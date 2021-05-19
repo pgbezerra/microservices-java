@@ -1,9 +1,11 @@
 package com.pgbezerra.productservice.service.impl;
 
+import com.pgbezerra.productservice.event.ProductPersistEvent;
 import com.pgbezerra.productservice.model.Product;
 import com.pgbezerra.productservice.repository.ProductRepository;
 import com.pgbezerra.productservice.service.ProductService;
 import io.micrometer.core.lang.NonNull;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
@@ -14,15 +16,19 @@ import static java.util.Objects.requireNonNull;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public ProductServiceImpl(final ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, ApplicationEventPublisher eventPublisher) {
         this.productRepository = productRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
     public Product save(@NonNull Product product) {
         requireNonNull(product);
-        return productRepository.save(product);
+        Product productPersist = productRepository.save(product);
+        eventPublisher.publishEvent(new ProductPersistEvent(this, productPersist));
+        return productPersist;
     }
 
     @Override

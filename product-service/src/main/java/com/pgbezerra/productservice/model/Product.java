@@ -61,4 +61,13 @@ public class Product {
     public int hashCode() {
         return hash(id);
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", value=" + value +
+                '}';
+    }
 }
