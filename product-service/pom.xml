@@ -10,11 +10,12 @@
     </parent>
     <groupId>com.pgbezerra</groupId>
     <artifactId>product-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>product-service</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
+        <jib-maven-plugin.version>3.0.0</jib-maven-plugin.version>
         <spring-cloud.version>2020.0.2</spring-cloud.version>
         <modelmapper.version>2.4.2</modelmapper.version>
         <spring-doc.openapi.version>1.5.8</spring-doc.openapi.version>
@@ -24,14 +25,32 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -96,6 +115,22 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>${jib-maven-plugin.version}</version>
+                <configuration>
+                    <from>
+                        <image>azul/zulu-openjdk-alpine:11</image>
+                    </from>
+                    <to>
+                        <image>paulogabrieljb/learn:${version}</image>
+                    </to>
+                    <container>
+                        <mainClass>com.pgbezerra.productservice.ProductServiceApplication</mainClass>
+                    </container>
+                </configuration>
             </plugin>
         </plugins>
     </build>
