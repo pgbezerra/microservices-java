@@ -14,3 +14,22 @@ services:
     expose:
       - 61616
       - 8161
+    networks:
+      - ms-net
+
+  produto:
+    container_name: product
+    image: paulogabrieljb/learn:1.0
+    environment:
+      JMS_HOST: jms
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+    depends_on:
+      - jms
+    networks:
+      - ms-net
+
+networks:
+  ms-net:
